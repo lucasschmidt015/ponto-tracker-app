@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, Platform } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { Redirect } from "expo-router";
 
@@ -16,8 +15,6 @@ import Loading from '@/components/Loading';
 const History = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [showStartPicker, setShowStartPicker] = useState(false);
-  const [showEndPicker, setShowEndPicker] = useState(false);
 
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === 'dark';
@@ -50,78 +47,18 @@ const History = () => {
         <Text style={styles.subTitle}>Select a range to start</Text>
         <View style={styles.dateButtons}>
           <TouchableOpacity style={styles.dateButton} onPress={() => {
-            setShowEndPicker(false);
-            if (Platform.OS === 'android') {
-              DateTimePicker.open({
-                value: startDate,
-                mode: 'date',
-                display: 'default',
-                onChange: (event, selectedDate) => {
-                  if (selectedDate) setStartDate(selectedDate);
-                }
-              });
-            } else {
-              setShowStartPicker(true);
-            }
+            // Date picker functionality removed
+            console.log('Start date picker would open here');
           }}>
             <Text>{startDate.toLocaleDateString()}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dateButton} onPress={() => {
-            setShowStartPicker(false);
-            if (Platform.OS === 'android') {
-              DateTimePicker.open({
-                value: endDate,
-                mode: 'date',
-                display: 'default',
-                onChange: (event, selectedDate) => {
-                  if (selectedDate) setEndDate(selectedDate);
-                }
-              });
-            } else {
-              setShowEndPicker(true);
-            }
+            // Date picker functionality removed
+            console.log('End date picker would open here');
           }}>
             <Text>{endDate.toLocaleDateString()}</Text>
           </TouchableOpacity>
         </View>
-        {Platform.OS === 'ios' && showStartPicker && (
-          <>
-            <DateTimePicker
-              value={startDate}
-              mode="date"
-              display="spinner"
-              onChange={(event, selectedDate) => {
-                if (event.type === 'set' && selectedDate) {
-                  setStartDate(selectedDate);
-                } else if (event.type === 'dismissed') {
-                  setShowStartPicker(false);
-                }
-              }}
-            />
-            <TouchableOpacity onPress={() => setShowStartPicker(false)} style={{ marginTop: 8 }}>
-              <Text style={{ color: 'blue' }}>Confirm Start Date</Text>
-            </TouchableOpacity>
-          </>
-        )}
-        {Platform.OS === 'ios' && showEndPicker && (
-          <>
-            <DateTimePicker
-              value={endDate}
-              mode="date"
-              display="spinner"
-              onChange={(event, selectedDate) => {
-                if (event.type === 'set' && selectedDate) {
-                  setEndDate(selectedDate);
-                } else if (event.type === 'dismissed') {
-                  setShowEndPicker(false);
-                }
-              }}
-            />
-            <TouchableOpacity onPress={() => setShowEndPicker(false)} style={{ marginTop: 8 }}>
-              <Text style={{ color: 'blue' }}>Confirm End Date</Text>
-            </TouchableOpacity>
-          </>
-        )}
         <Text style={styles.errorText}>End Date must be superior to Start Date</Text>
       </View>
 
