@@ -92,7 +92,7 @@ const Login: React.FC = () => {
 
   return (
     <SafeAreaView style={themedStyles.container}>
-      <Text style={themedStyles.appName}>BlueTrack</Text>
+      <Text style={themedStyles.appName}>Ponto Tracker</Text>
 
       <Text style={themedStyles.title}>Welcome back 👋</Text>
 
