@@ -130,8 +130,8 @@ const Home = () => {
         
         Toast.show({
           type: 'error',
-          text1: 'Same Minute',
-          text2: `Wait ${timeUntilNextMinute} seconds. No two entries allowed in the same minute.`,
+          text1: 'Wait ' + timeUntilNextMinute + ' seconds',
+          text2: 'No two entries allowed in the same minute.',
         });
         return;
       }
