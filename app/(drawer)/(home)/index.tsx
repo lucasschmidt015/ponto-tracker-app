@@ -37,7 +37,6 @@ const Home = () => {
       });
 
       if (response.status === 200) {
-        console.log('response.data: ', response.data)
         setEntries(response.data || []);
       }
     } catch (error: any) {
@@ -106,6 +105,36 @@ const Home = () => {
         text2: 'Missing user or company information.',
       });
       return;
+    }
+
+    // Check if user is trying to create entry in the same minute as the last entry
+    if (entries.length > 0) {
+      const sortedEntries = [...entries].sort((a, b) => 
+        new Date(b.entry_time).getTime() - new Date(a.entry_time).getTime()
+      );
+      
+      const lastEntry = sortedEntries[0];
+      const lastEntryTime = new Date(lastEntry.entry_time);
+      const currentTime = new Date();
+      
+      // Check if both times are in the same minute (same hour and minute)
+      const lastEntryMinute = lastEntryTime.getHours() * 60 + lastEntryTime.getMinutes();
+      const currentMinute = currentTime.getHours() * 60 + currentTime.getMinutes();
+
+      if (lastEntryMinute === currentMinute) {
+        const nextMinute = new Date(currentTime);
+        nextMinute.setMinutes(nextMinute.getMinutes() + 1);
+        nextMinute.setSeconds(0);
+        
+        const timeUntilNextMinute = Math.ceil((nextMinute.getTime() - currentTime.getTime()) / 1000);
+        
+        Toast.show({
+          type: 'error',
+          text1: 'Same Minute',
+          text2: `Wait ${timeUntilNextMinute} seconds. No two entries allowed in the same minute.`,
+        });
+        return;
+      }
     }
 
     setIsRegistering(true);
